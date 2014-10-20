@@ -1,26 +1,20 @@
-Version Helper for PHP projects
-===============================
+Versions and Constraints for PHP
+================================
 
-This module normalize versions as Composer do. Parse constraints as Composer do too.
-And tests if a version match a constraint.
+This library parse versions, 
+E.x.:
+<code>1.0.0</code>
+<code>1.0.2-stable</code>
+<code>1.0.20-alpha2</code>.
+It can parse constraints (like Composer versions),
+E.x.:
+<code>>=1.0 >=1.0,<2.0 >=1.0,<1.1 | >=1.2</code>,
+<code>1.0.*</code>,
+<code>~1.2</code>.
 
-Example:
+The goal of that is to let you check if a version matches a constraint,
+or to check if a constraint is a subset of another constraint.
 
-```php
-<?php
+All that is done to let us select which version is compatible with a user constraints.
 
-$parser = new \Version\VersionParser();
-
-echo $parser->parseStability('1.2-RC2'); // RC
-echo $parser->parseStability('2.0b'); // beta
-echo $parser->parseConstraints('1.0'); // stable
-
-echo $parser->normalize('2.0b1'); // 2.0.0.0-beta1
-
-$c = $parser->parseConstraints('>=1.2.5,<2.0');
-echo $c->match('1.2.0'); // false
-echo $c->match('1.5'); // true
-echo $c->match('2.0'); // false
-
-?>
-```
+It works with the same rules of Composer versioning.
