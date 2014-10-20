@@ -8,9 +8,17 @@ use Version\Constraint\SimpleConstraint;
 
 abstract class Constraint
 {
+    /**
+     * Indicate if this constraint matches another constraint
+     *
+     * @param Constraint $constraint
+     * @return bool
+     */
     public abstract function matches(Constraint $constraint);
 
     /**
+     * Parse a string and return a Constraint.
+     *
      * @param string $input
      * @return Constraint
      */

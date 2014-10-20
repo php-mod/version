@@ -41,13 +41,64 @@ class SimpleConstraint extends Constraint
     {
         if ($constraint instanceof AnythingConstraint) {
             return true;
-        } elseif ($constraint instanceof MultiConstraint) {
-            return $constraint->matches($this);
-        } elseif ($constraint instanceof SimpleConstraint) {
+        }
+        if ($constraint instanceof SimpleConstraint) {
+            if((string) $this->operator == '=' &&
+                (string) $constraint->operator == '=') {
+                return $this->version->compare($constraint->version) == 0;
+            }
+            if((string) $this->operator == '!=' ||
+                (string) $this->operator == '<>') {
+                if((string) $constraint->operator == '=') {
+                    return $this->version->compare($constraint->version) != 0;
+                }
+                return true;
+            }
+            if((string) $constraint->operator == '!=' ||
+                (string) $constraint->operator == '<>') {
+                if((string) $this->operator == '=') {
+                    return $this->version->compare($constraint->version) != 0;
+                }
+                return true;
+            }
+            if((string) $this->operator == '>') {
+                if((string) $constraint->operator == '<' ||
+                    (string) $constraint->operator == '<='
+                ) {
+                    return $this->version->compare($constraint->version) < 0;
+                }
+            }
+            if((string) $this->operator == '>=') {
+                if((string) $constraint->operator == '<') {
+                    return $this->version->compare($constraint->version) < 0;
+                }
+            }
+            if((string) $this->operator == '<') {
+                if((string) $constraint->operator == '>' ||
+                    (string) $constraint->operator == '>='
+                ) {
+                    return $this->version->compare($constraint->version) > 0;
+                }
+            }
+            if((string) $this->operator == '<=') {
+                if((string) $constraint->operator == '>') {
+                    return $this->version->compare($constraint->version) > 0;
+                }
+            }
+            if((string) $this->operator == '>=' &&
+                (string) $constraint->operator == '<=') {
+                return $this->version->compare($constraint->version) <= 0;
+            }
+            if((string) $this->operator == '<=' &&
+                (string) $constraint->operator == '>=') {
+                return $this->version->compare($constraint->version) >= 0;
+            }
             return
-                version_compare(
-                    $constraint->getVersion(),
-                    Version::parse($this->version), $this->operator);
+                $this->isSubsetOf($constraint) ||
+                $constraint->isSubsetOf($this);
+        }
+        if ($constraint instanceof MultiConstraint) {
+            return $constraint->matches($this);
         }
         return false;
     }
