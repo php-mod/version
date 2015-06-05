@@ -19,24 +19,38 @@ class Stability
      */
     private $number;
 
-    public function __construct($stability = 'stable', $number = null)
+    public function __construct( $stability = 'stable', $number = null )
     {
-        if (strlen($stability) == 0) {
+        if( strlen( $stability ) == 0 )
+        {
             $stability = 'stable';
         }
-
-        if (strtolower($stability) == 'rc') {
-            $stability = 'RC';
-        } elseif (in_array(strtolower($stability), array('pl', 'patch', 'p'))) {
-            $stability = 'patch';
-        } elseif (in_array(strtolower($stability), array('beta', 'b'))) {
-            $stability = 'beta';
-        } elseif (in_array(strtolower($stability), array('a'))) {
-            $stability = 'alpha';
+        $stability = strtolower( $stability );
+        switch( $stability )
+        {
+            case 'rc':
+                $stability = 'RC';
+                break;
+            case 'patch':
+            case 'pl':
+            case 'p':
+                $stability = 'patch';
+                break;
+            case 'beta':
+            case 'b':
+                $stability = 'beta';
+                break;
+            case 'alpha':
+            case 'a':
+                $stability = 'alpha';
+                break;
+            case 'dev':
+            case 'd':
+                $stability = 'dev';
+                break;
         }
-
         $this->stability = $stability;
-        $this->number = $number;
+        $this->number    = $number;
     }
 
     public function __toString()
@@ -57,32 +71,45 @@ class Stability
         return $this->stability;
     }
 
-    public function compare(Stability $stability)
+    public function compare( Stability $stability )
     {
-        if($this->toInt($this->stability) > $this->toInt($stability->stability)) {
+        if( $this->toInt( $this->stability ) > $this->toInt( $stability->stability ) )
+        {
             return 1;
         }
-        if($this->toInt($this->stability) < $this->toInt($stability->stability)) {
+        if( $this->toInt( $this->stability ) < $this->toInt( $stability->stability ) )
+        {
             return -1;
         }
-        if($this->number > $stability->number) {
+        if( $this->number > $stability->number )
+        {
             return 1;
         }
-        if($this->number < $stability->number) {
+        if( $this->number < $stability->number )
+        {
             return -1;
         }
         return 0;
     }
 
-    private function toInt($stability)
+    private function toInt( $stability )
     {
-        switch($stability) {
-            case 'alpha': return 1;
-            case 'beta': return 2;
-            case 'RC': return 3;
-            case 'stable': return 4;
-            case 'patch': return 5;
-            default: throw new InvalidArgumentException('Invalid stability: ' . $stability);
+        switch( $stability )
+        {
+            case 'dev':
+                return 1;
+            case 'alpha':
+                return 2;
+            case 'beta':
+                return 3;
+            case 'RC':
+                return 4;
+            case 'stable':
+                return 5;
+            case 'patch':
+                return 6;
+            default:
+                throw new InvalidArgumentException( 'Invalid stability: ' . $stability );
         }
     }
 }
