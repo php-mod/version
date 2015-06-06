@@ -2,8 +2,6 @@
 
 namespace Version;
 
-use JsonSchema\Exception\InvalidArgumentException;
-
 class Stability
 {
 
@@ -109,7 +107,7 @@ class Stability
             case 'patch':
                 return 6;
             default:
-                throw new InvalidArgumentException( 'Invalid stability: ' . $stability );
+                throw new \InvalidArgumentException( 'Invalid stability: ' . $stability );
         }
     }
 }
