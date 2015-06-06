@@ -208,8 +208,8 @@ class Version
             $version =
                 $this->major . '.' .
                 $this->minor . '.' .
-                $this->revision . '.' .
-                (int)$this->micro;
+                $this->revision;
+                if($this->micro !== null) $version .= '.' . (int)$this->micro;
         } else {
             $version = $this->major;
             if ($this->minor) $version .= '-' . $this->minor;
