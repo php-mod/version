@@ -2,12 +2,10 @@
 
 namespace Version;
 
-use JsonSchema\Exception\InvalidArgumentException;
-
 class Stability
 {
 
-    const REGEX = '[-|_|\.]{0,1}([R|r][C|c]|pl|a|alpha|[B|b][E|e][T|t][A|a]|b|B|patch|stable|p)\.{0,1}(\d*)';
+    const REGEX = '[-|_|\.]{0,1}([R|r][C|c]|pl|a|alpha|[B|b][E|e][T|t][A|a]|b|B|patch|stable|p|[D|d][E|e][V|v]|[D|d])\.{0,1}(\d*)';
 
     /**
      * @var string
@@ -109,7 +107,7 @@ class Stability
             case 'patch':
                 return 6;
             default:
-                throw new InvalidArgumentException( 'Invalid stability: ' . $stability );
+                throw new \InvalidArgumentException( 'Invalid stability: ' . $stability );
         }
     }
 }
