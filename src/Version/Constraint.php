@@ -170,12 +170,6 @@ abstract class Constraint
 
         foreach ($parts as $k => $v) {
             if ($v != $max[$k]) {
-                if ($input == '<=1.2.3') {
-                    print_r($parts);
-                    print_r($max);
-                    print_r(array_diff($parts, $max));
-                    die;
-                }
                 $maxVersion = new Version($max[0]);
                 if (isset($max[1])) {
                     $maxVersion->setMinor($max[1]);
