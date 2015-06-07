@@ -119,8 +119,7 @@ abstract class Constraint
                 $max[2]++;
                 $max[3] = 0;
             } else {
-                echo $end;
-                die($end);
+                throw new \Exception('Unsupported number of elements.');
             }
         }
 
