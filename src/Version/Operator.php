@@ -13,11 +13,11 @@ class Operator
         if ($operator == '==') {
             $operator = '=';
         }
-        if (!in_array($operator, array('=', '<', '>', '<=', '>=', '<>', '!=', '~'))) {
-            $propositions = array(
+        if (!in_array($operator, ['=', '<', '>', '<=', '>=', '<>', '!=', '~'])) {
+            $propositions = [
                 '~>' => '~',
                 '!' => '!='
-            );
+            ];
             throw new \UnexpectedValueException(
                 'Invalid operator "' . $operator .
                 '", you probably meant to use the "' . $propositions[$operator] .

@@ -65,10 +65,10 @@ class MultiConstraint extends Constraint
                         $max2 instanceof SimpleConstraint
                     ) {
                         if (
-                            in_array((string) $min1->getOperator(), array('>', '>=')) &&
-                            in_array((string) $min2->getOperator(), array('>', '>=')) &&
-                            in_array((string) $max1->getOperator(), array('<', '<=')) &&
-                            in_array((string) $max2->getOperator(), array('<', '<='))
+                            in_array((string) $min1->getOperator(), ['>', '>=']) &&
+                            in_array((string) $min2->getOperator(), ['>', '>=']) &&
+                            in_array((string) $max1->getOperator(), ['<', '<=']) &&
+                            in_array((string) $max2->getOperator(), ['<', '<='])
                         ) {
                             return
                                 $min1->isSubsetOf($min2) &&

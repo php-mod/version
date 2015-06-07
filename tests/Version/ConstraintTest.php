@@ -26,68 +26,68 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function simpleConstraints()
     {
-        return array(
-            array(
+        return [
+            [
                 '<1.2.3.4-stable',
                 new SimpleConstraint(new Operator('<'), Version::parse('1.2.3.4')),
                 'lesser than override'
-            ),
+            ],
             'match any'            =>
-                array(
+                [
                     '*',
                     new AnythingConstraint()
-                ),
+                ],
             'match any/2'          =>
-                array(
+                [
                     '*.*',
                     new AnythingConstraint()
-                ),
+                ],
             'match any/3'          =>
-                array(
+                [
                     '*.x.*',
                     new AnythingConstraint()
-                ),
-            'match any/4'          => array('x.x.x.*',
-                new AnythingConstraint()),
-            'not equal'            => array('<>1.0.0',
+                ],
+            'match any/4'          => ['x.x.x.*',
+                new AnythingConstraint()],
+            'not equal'            => ['<>1.0.0',
                 new SimpleConstraint(new Operator('<>'),
-                    Version::parse('1.0.0.0'))),
-            'not equal/2'          => array('!=1.0.0',
+                    Version::parse('1.0.0.0'))],
+            'not equal/2'          => ['!=1.0.0',
                 new SimpleConstraint(new Operator('!='),
-                    Version::parse('1.0.0.0'))),
-            'greater than'         => array('>1.0.0',
+                    Version::parse('1.0.0.0'))],
+            'greater than'         => ['>1.0.0',
                 new SimpleConstraint(new Operator('>'),
-                    Version::parse('1.0.0.0'))),
+                    Version::parse('1.0.0.0'))],
             'lesser than'          =>
-                array(
+                [
                     '<1.2.3.4',
                     new SimpleConstraint(new Operator('<'), Version::parse('1.2.3.4'))
-                ),
-            'less/eq than'         => array('<=1.2.3',
+                ],
+            'less/eq than'         => ['<=1.2.3',
                 new SimpleConstraint(new Operator('<='),
-                    Version::parse('1.2.3.0'))),
-            'great/eq than'        => array('>=1.2.3',
+                    Version::parse('1.2.3.0'))],
+            'great/eq than'        => ['>=1.2.3',
                 new SimpleConstraint(new Operator('>='),
-                    Version::parse('1.2.3.0'))),
-            'equals'               => array('=1.2.3',
+                    Version::parse('1.2.3.0'))],
+            'equals'               => ['=1.2.3',
                 new SimpleConstraint(new Operator('='),
-                    Version::parse('1.2.3.0'))),
-            'double equals'        => array('==1.2.3',
+                    Version::parse('1.2.3.0'))],
+            'double equals'        => ['==1.2.3',
                 new SimpleConstraint(new Operator('='),
-                    Version::parse('1.2.3.0'))),
-            'no op means eq'       => array('1.2.3',
+                    Version::parse('1.2.3.0'))],
+            'no op means eq'       => ['1.2.3',
                 new SimpleConstraint(new Operator('='),
-                    Version::parse('1.2.3.0'))),
-            'completes version'    => array('=1.0',
+                    Version::parse('1.2.3.0'))],
+            'completes version'    => ['=1.0',
                 new SimpleConstraint(new Operator('='),
-                    Version::parse('1.0.0.0'))),
-            'shorthand beta'       => array('1.2.3b5',
+                    Version::parse('1.0.0.0'))],
+            'shorthand beta'       => ['1.2.3b5',
                 new SimpleConstraint(new Operator('='),
-                    Version::parse('1.2.3.0-beta5'))),
-            'accepts spaces'       => array('>= 1.2.3',
+                    Version::parse('1.2.3.0-beta5'))],
+            'accepts spaces'       => ['>= 1.2.3',
                 new SimpleConstraint(new Operator('>='),
-                    Version::parse('1.2.3.0'))),
-        );
+                    Version::parse('1.2.3.0'))],
+        ];
     }
 
     /**
@@ -108,7 +108,7 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     public function testParseConstraintsWildcard($input, $min, $max)
     {
         if ($min) {
-            $expected = new MultiConstraint(array($min, $max));
+            $expected = new MultiConstraint([$min, $max]);
         } else {
             $expected = $max;
         }
@@ -118,21 +118,21 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function wildcardConstraints()
     {
-        return array(
-            array('2.*',     new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('3.0.0.0'))),
-            array('2.0.*',   new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.1.0.0'))),
-            array('2.2.x',   new SimpleConstraint(new Operator('>='), Version::parse('2.2.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.3.0.0'))),
-            array('2.1.3.*', new SimpleConstraint(new Operator('>='), Version::parse('2.1.3.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.1.4.0'))),
-            array('20.*',    new SimpleConstraint(new Operator('>='), Version::parse('20.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('21.0.0.0'))),
-            array('2.10.x',  new SimpleConstraint(new Operator('>='), Version::parse('2.10.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.11.0.0'))),
-            array('0.*',     null, new SimpleConstraint(new Operator('<'), Version::parse('1.0.0.0'))),
-        );
+        return [
+            ['2.*',     new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('3.0.0.0'))],
+            ['2.0.*',   new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.1.0.0'))],
+            ['2.2.x',   new SimpleConstraint(new Operator('>='), Version::parse('2.2.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.3.0.0'))],
+            ['2.1.3.*', new SimpleConstraint(new Operator('>='), Version::parse('2.1.3.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.1.4.0'))],
+            ['20.*',    new SimpleConstraint(new Operator('>='), Version::parse('20.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('21.0.0.0'))],
+            ['2.10.x',  new SimpleConstraint(new Operator('>='), Version::parse('2.10.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.11.0.0'))],
+            ['0.*',     null, new SimpleConstraint(new Operator('<'), Version::parse('1.0.0.0'))],
+        ];
     }
 
     /**
@@ -144,7 +144,7 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     public function testParseTildeWildcard($input, $min, $max)
     {
         if ($min) {
-            $expected = new MultiConstraint(array($min, $max));
+            $expected = new MultiConstraint([$min, $max]);
         } else {
             $expected = $max;
         }
@@ -158,37 +158,37 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function tildeConstraints()
     {
-        return array(
-            array('~1',       new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.1.0.0'))),
-            array('~1.2',     new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2.3',   new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
-            array('~1.2.3.4', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.4')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.2.4.0'))),
-            array('~1.2-beta',new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2-b2',  new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2-BETA2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2.2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
-            array('~1.2.2-stable', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0-stable')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
-        );
+        return [
+            ['~1',       new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.0.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('1.1.0.0'))],
+            ['~1.2',     new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.2.3',   new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))],
+            ['~1.2.3.4', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.4')),
+                new SimpleConstraint(new Operator('<'), Version::parse('1.2.4.0'))],
+            ['~1.2-beta',new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.2-b2',  new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.2-BETA2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
+                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))],
+            ['~1.2.2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0')),
+                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))],
+            ['~1.2.2-stable', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0-stable')),
+                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))],
+        ];
     }
 
     public function testParseConstraintsMulti()
     {
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
         $second = new SimpleConstraint(new Operator('<='), Version::parse('3.0.0.0'));
-        $multi = new MultiConstraint(array($first, $second));
+        $multi = new MultiConstraint([$first, $second]);
         $this->assertSame((string) $multi, (string) Constraint::parse('>2.0,<=3.0'));
     }
 
@@ -197,8 +197,8 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
         $second = new SimpleConstraint(new Operator('<'), Version::parse('2.0.5.0'));
         $third = new SimpleConstraint(new Operator('>'), Version::parse('2.0.6.0'));
-        $multi1 = new MultiConstraint(array($first, $second));
-        $multi2 = new MultiConstraint(array($multi1, $third), false);
+        $multi1 = new MultiConstraint([$first, $second]);
+        $multi2 = new MultiConstraint([$multi1, $third], false);
         $this->assertSame((string) $multi2, (string) Constraint::parse('>2.0,<2.0.5 | >2.0.6'));
     }
 
@@ -206,7 +206,7 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     {
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
         $second = new SimpleConstraint(new Operator('<='), Version::parse('3.0.0.0'));
-        $multi = new MultiConstraint(array($first, $second));
+        $multi = new MultiConstraint([$first, $second]);
         $this->assertSame((string) $multi, (string) Constraint::parse('>2.0,<=3.0'));
     }
 
@@ -222,10 +222,10 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function failingConstraints()
     {
-        return array(
-            'empty '            => array(''),
-            'invalid version'   => array('1.0.0-meh'),
-        );
+        return [
+            'empty '            => [''],
+            'invalid version'   => ['1.0.0-meh'],
+        ];
     }
 
     /**
@@ -249,231 +249,231 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function isSubsetOfProvider()
     {
-        return array(
-            array('1.0', '1.0', true),
-            array('1.5.8', '1.5.8', true),
-            array('1.0.0', '1.0', true),
-            array('1.5.0', '2.5', false),
-            array('2.3.0', '1.5.8', false),
+        return [
+            ['1.0', '1.0', true],
+            ['1.5.8', '1.5.8', true],
+            ['1.0.0', '1.0', true],
+            ['1.5.0', '2.5', false],
+            ['2.3.0', '1.5.8', false],
 
-            array('2.3.0', '>1.0', true),
-            array('2.3.0', '>2.3', false),
-            array('2.3.0', '>2.5', false),
-            array('=1.0.0.0', '>1.0.0.0', false),
+            ['2.3.0', '>1.0', true],
+            ['2.3.0', '>2.3', false],
+            ['2.3.0', '>2.5', false],
+            ['=1.0.0.0', '>1.0.0.0', false],
 
-            array('1.0.0', '>=1.0', true),
-            array('2.3.0', '>=1.0', true),
-            array('2.3.0', '>=5.2.0', false),
+            ['1.0.0', '>=1.0', true],
+            ['2.3.0', '>=1.0', true],
+            ['2.3.0', '>=5.2.0', false],
 
-            array('2.3.0', '<3.5.8', true),
-            array('2.3.0', '<2.3', false),
-            array('2.3.0', '<1.5.8', false),
+            ['2.3.0', '<3.5.8', true],
+            ['2.3.0', '<2.3', false],
+            ['2.3.0', '<1.5.8', false],
 
-            array('2.3.0', '<=2.3', true),
-            array('2.3.0', '<=2.3.0.0', true),
-            array('2.3.0', '<=0.3.0.0', false),
+            ['2.3.0', '<=2.3', true],
+            ['2.3.0', '<=2.3.0.0', true],
+            ['2.3.0', '<=0.3.0.0', false],
 
-            array('1.5.0', '!=2.5', true),
-            array('3.5.0', '!=2.5', true),
-            array('2.3.0', '!=2.3', false),
+            ['1.5.0', '!=2.5', true],
+            ['3.5.0', '!=2.5', true],
+            ['2.3.0', '!=2.3', false],
 
-            array('1.5.0', '<>2.5', true),
-            array('3.5.0', '<>2.5', true),
-            array('2.3.0', '<>2.3', false),
+            ['1.5.0', '<>2.5', true],
+            ['3.5.0', '<>2.5', true],
+            ['2.3.0', '<>2.3', false],
 
-            array('2.5.0', '~2.5', true),
-            array('2.5.1', '~2.5', true),
-            array('2.7.0', '~2.5', true),
-            array('3.0.0', '~2.5', false),
+            ['2.5.0', '~2.5', true],
+            ['2.5.1', '~2.5', true],
+            ['2.7.0', '~2.5', true],
+            ['3.0.0', '~2.5', false],
 
-            array('2.5.0', '~2.5.3', false),
-            array('2.5.1', '~2.5.3', false),
-            array('2.5.3', '~2.5.3', true),
-            array('2.5.4', '~2.5.3', true),
-            array('2.5.4.5', '~2.5.3', true),
-            array('2.7.0', '~2.5.3', false),
-            array('3.0.0', '~2.5.3', false),
+            ['2.5.0', '~2.5.3', false],
+            ['2.5.1', '~2.5.3', false],
+            ['2.5.3', '~2.5.3', true],
+            ['2.5.4', '~2.5.3', true],
+            ['2.5.4.5', '~2.5.3', true],
+            ['2.7.0', '~2.5.3', false],
+            ['3.0.0', '~2.5.3', false],
 
-            array('>2.3.0', '1.5.8', false),
+            ['>2.3.0', '1.5.8', false],
 
-            array('>2.3.0', '>1.5.8', true),
-            array('>2.3.0', '>2.3.0', true),
-            array('>2.3.0', '>2.3.0.1', false),
+            ['>2.3.0', '>1.5.8', true],
+            ['>2.3.0', '>2.3.0', true],
+            ['>2.3.0', '>2.3.0.1', false],
 
-            array('>2.3.0', '>=1.5.8', true),
-            array('>2.3.0', '>=2.3.0', true),
-            array('>2.3.0', '>=2.3.0.1', false),
+            ['>2.3.0', '>=1.5.8', true],
+            ['>2.3.0', '>=2.3.0', true],
+            ['>2.3.0', '>=2.3.0.1', false],
 
-            array('>2.3.0', '<1.5.8', false),
-            array('>2.3.0', '<2.3.0', false),
-            array('>2.3.0', '<2.3.0.1', false),
+            ['>2.3.0', '<1.5.8', false],
+            ['>2.3.0', '<2.3.0', false],
+            ['>2.3.0', '<2.3.0.1', false],
 
-            array('>2.3.0', '<=1.5.8', false),
-            array('>2.3.0', '<=2.3.0', false),
-            array('>2.3.0', '<=2.3.0.1', false),
+            ['>2.3.0', '<=1.5.8', false],
+            ['>2.3.0', '<=2.3.0', false],
+            ['>2.3.0', '<=2.3.0.1', false],
 
-            array('>2.3.0', '!=1.5.8', true),
-            array('>2.3.0', '!=2.3.0', true),
-            array('>2.3.0', '!=2.3.0.1', false),
+            ['>2.3.0', '!=1.5.8', true],
+            ['>2.3.0', '!=2.3.0', true],
+            ['>2.3.0', '!=2.3.0.1', false],
 
-            array('>2.3.0', '<>1.5.8', true),
-            array('>2.3.0', '<>2.3.0', true),
-            array('>2.3.0', '<>2.3.0.1', false),
+            ['>2.3.0', '<>1.5.8', true],
+            ['>2.3.0', '<>2.3.0', true],
+            ['>2.3.0', '<>2.3.0.1', false],
 
-            array('>2.3.0', '~1.5.8', false),
-            array('>2.3.0', '~2.3', false),
-            array('>2.3.0', '~2.4.', false),
+            ['>2.3.0', '~1.5.8', false],
+            ['>2.3.0', '~2.3', false],
+            ['>2.3.0', '~2.4.', false],
 
-            array('>=2.3.0', '1.5.8', false),
+            ['>=2.3.0', '1.5.8', false],
 
-            array('>=2.3.0', '>1.5.8', true),
-            array('>=2.3.0', '>2.3', false),
-            array('>=2.3.0', '>2.3.0.1', false),
+            ['>=2.3.0', '>1.5.8', true],
+            ['>=2.3.0', '>2.3', false],
+            ['>=2.3.0', '>2.3.0.1', false],
 
-            array('>=2.3.0', '>=1.5.8', true),
-            array('>=2.3.0', '>=2.3', true),
-            array('>=2.3.0', '>=2.3.0.1', false),
+            ['>=2.3.0', '>=1.5.8', true],
+            ['>=2.3.0', '>=2.3', true],
+            ['>=2.3.0', '>=2.3.0.1', false],
 
-            array('>=2.3.0', '<1.5.8', false),
-            array('>=2.3.0', '<2.3', false),
-            array('>=2.3.0', '<2.3.0.1', false),
+            ['>=2.3.0', '<1.5.8', false],
+            ['>=2.3.0', '<2.3', false],
+            ['>=2.3.0', '<2.3.0.1', false],
 
-            array('>=2.3.0', '<=1.5.8', false),
-            array('>=2.3.0', '<=2.3', false),
-            array('>=2.3.0', '<=2.3.0.1', false),
+            ['>=2.3.0', '<=1.5.8', false],
+            ['>=2.3.0', '<=2.3', false],
+            ['>=2.3.0', '<=2.3.0.1', false],
 
-            array('>=2.3.0', '!=1.5.8', true),
-            array('>=2.3.0', '!=2.3', false),
-            array('>=2.3.0', '!=2.3.0.1', false),
+            ['>=2.3.0', '!=1.5.8', true],
+            ['>=2.3.0', '!=2.3', false],
+            ['>=2.3.0', '!=2.3.0.1', false],
 
-            array('>=2.3.0', '<>1.5.8', true),
-            array('>=2.3.0', '<>2.3', false),
-            array('>=2.3.0', '<>2.3.0.1', false),
+            ['>=2.3.0', '<>1.5.8', true],
+            ['>=2.3.0', '<>2.3', false],
+            ['>=2.3.0', '<>2.3.0.1', false],
 
-            array('>=2.3.0', '~1.5.8', false),
-            array('>=2.3.0', '~2.3', false),
-            array('>=2.3.0', '~2.4.', false),
+            ['>=2.3.0', '~1.5.8', false],
+            ['>=2.3.0', '~2.3', false],
+            ['>=2.3.0', '~2.4.', false],
 
-            array('<2.3.0', '1.5.8', false),
+            ['<2.3.0', '1.5.8', false],
 
-            array('<2.3.0', '>1.5.8', false),
-            array('<2.3.0', '>2.3.0', false),
-            array('<2.3.0', '>2.3.0.1', false),
+            ['<2.3.0', '>1.5.8', false],
+            ['<2.3.0', '>2.3.0', false],
+            ['<2.3.0', '>2.3.0.1', false],
 
-            array('<2.3.0', '>=1.5.8', false),
-            array('<2.3.0', '>=2.3.0', false),
-            array('<2.3.0', '>=2.3.0.1', false),
+            ['<2.3.0', '>=1.5.8', false],
+            ['<2.3.0', '>=2.3.0', false],
+            ['<2.3.0', '>=2.3.0.1', false],
 
-            array('<2.3.0', '<1.5.8', false),
-            array('<2.3.0', '<2.3.0', true),
-            array('<2.3.0', '<2.3.0.1', true),
+            ['<2.3.0', '<1.5.8', false],
+            ['<2.3.0', '<2.3.0', true],
+            ['<2.3.0', '<2.3.0.1', true],
 
-            array('<2.3.0', '<=1.5.8', false),
-            array('<2.3.0', '<=2.3.0', true),
-            array('<2.3.0', '<=2.3.0.1', true),
+            ['<2.3.0', '<=1.5.8', false],
+            ['<2.3.0', '<=2.3.0', true],
+            ['<2.3.0', '<=2.3.0.1', true],
 
-            array('<2.3.0', '!=1.5.8', false),
-            array('<2.3.0', '!=2.3.0', true),
-            array('<2.3.0', '!=2.3.0.1', true),
+            ['<2.3.0', '!=1.5.8', false],
+            ['<2.3.0', '!=2.3.0', true],
+            ['<2.3.0', '!=2.3.0.1', true],
 
-            array('<2.3.0', '<>1.5.8', false),
-            array('<2.3.0', '<>2.3.0', true),
-            array('<2.3.0', '<>2.3.0.1', true),
+            ['<2.3.0', '<>1.5.8', false],
+            ['<2.3.0', '<>2.3.0', true],
+            ['<2.3.0', '<>2.3.0.1', true],
 
-            array('<2.3.0', '~1.5.8', false),
-            array('<2.3.0', '~2.3', false),
-            array('<2.3.0', '~2.4.', false),
+            ['<2.3.0', '~1.5.8', false],
+            ['<2.3.0', '~2.3', false],
+            ['<2.3.0', '~2.4.', false],
 
-            array('<=2.3.0', '1.5.8', false),
+            ['<=2.3.0', '1.5.8', false],
 
-            array('<=2.3.0', '>1.5.8', false),
-            array('<=2.3.0', '>2.3.0', false),
-            array('<=2.3.0', '>2.3.0.1', false),
+            ['<=2.3.0', '>1.5.8', false],
+            ['<=2.3.0', '>2.3.0', false],
+            ['<=2.3.0', '>2.3.0.1', false],
 
-            array('<=2.3.0', '>=1.5.8', false),
-            array('<=2.3.0', '>=2.3.0', false),
-            array('<=2.3.0', '>=2.3.0.1', false),
+            ['<=2.3.0', '>=1.5.8', false],
+            ['<=2.3.0', '>=2.3.0', false],
+            ['<=2.3.0', '>=2.3.0.1', false],
 
-            array('<=2.3.0', '<1.5.8', false),
-            array('<=2.3.0', '<2.3.0', false),
-            array('<=2.3.0', '<2.3.0.1', true),
+            ['<=2.3.0', '<1.5.8', false],
+            ['<=2.3.0', '<2.3.0', false],
+            ['<=2.3.0', '<2.3.0.1', true],
 
-            array('<=2.3.0', '<=1.5.8', false),
-            array('<=2.3.0', '<=2.3.0', true),
-            array('<=2.3.0', '<=2.3.0.1', true),
+            ['<=2.3.0', '<=1.5.8', false],
+            ['<=2.3.0', '<=2.3.0', true],
+            ['<=2.3.0', '<=2.3.0.1', true],
 
-            array('<=2.3.0', '!=1.5.8', false),
-            array('<=2.3.0', '!=2.3.0', false),
-            array('<=2.3.0', '!=2.3.0.1', true),
+            ['<=2.3.0', '!=1.5.8', false],
+            ['<=2.3.0', '!=2.3.0', false],
+            ['<=2.3.0', '!=2.3.0.1', true],
 
-            array('<=2.3.0', '<>1.5.8', false),
-            array('<=2.3.0', '<>2.3.0', false),
-            array('<=2.3.0', '<>2.3.0.1', true),
+            ['<=2.3.0', '<>1.5.8', false],
+            ['<=2.3.0', '<>2.3.0', false],
+            ['<=2.3.0', '<>2.3.0.1', true],
 
-            array('<=2.3.0', '~1.5.8', false),
-            array('<=2.3.0', '~2.3', false),
-            array('<=2.3.0', '~2.4.', false),
+            ['<=2.3.0', '~1.5.8', false],
+            ['<=2.3.0', '~2.3', false],
+            ['<=2.3.0', '~2.4.', false],
 
-            array('!=2.3.0', '1.5.8', false),
+            ['!=2.3.0', '1.5.8', false],
 
-            array('<>2.3.0', '>1.5.8', false),
-            array('!=2.3.0', '>2.3.0', false),
-            array('<>2.3.0', '>2.3.0.1', false),
+            ['<>2.3.0', '>1.5.8', false],
+            ['!=2.3.0', '>2.3.0', false],
+            ['<>2.3.0', '>2.3.0.1', false],
 
-            array('!=2.3.0', '>=1.5.8', false),
-            array('<>2.3.0', '>=2.3.0', false),
-            array('!=2.3.0', '>=2.3.0.1', false),
+            ['!=2.3.0', '>=1.5.8', false],
+            ['<>2.3.0', '>=2.3.0', false],
+            ['!=2.3.0', '>=2.3.0.1', false],
 
-            array('<>2.3.0', '<1.5.8', false),
-            array('!=2.3.0', '<2.3.0', false),
-            array('<>2.3.0', '<2.3.0.1', false),
+            ['<>2.3.0', '<1.5.8', false],
+            ['!=2.3.0', '<2.3.0', false],
+            ['<>2.3.0', '<2.3.0.1', false],
 
-            array('!=2.3.0', '<=1.5.8', false),
-            array('<>2.3.0', '<=2.3.0', false),
-            array('!=2.3.0', '<=2.3.0.1', false),
+            ['!=2.3.0', '<=1.5.8', false],
+            ['<>2.3.0', '<=2.3.0', false],
+            ['!=2.3.0', '<=2.3.0.1', false],
 
-            array('<>2.3.0', '!=1.5.8', false),
-            array('!=2.3.0', '!=2.3.0.0', true),
-            array('<>2.3.0', '!=2.3.0.1', false),
+            ['<>2.3.0', '!=1.5.8', false],
+            ['!=2.3.0', '!=2.3.0.0', true],
+            ['<>2.3.0', '!=2.3.0.1', false],
 
-            array('!=2.3.0', '<>1.5.8', false),
-            array('<>2.3.0', '<>2.3', true),
-            array('!=2.3.0', '<>2.3.0.1', false),
+            ['!=2.3.0', '<>1.5.8', false],
+            ['<>2.3.0', '<>2.3', true],
+            ['!=2.3.0', '<>2.3.0.1', false],
 
-            array('!=2.3.0', '~1.5.8', false),
-            array('!=2.3.0', '~2.3', false),
-            array('!=2.3.0', '~2.4.', false),
+            ['!=2.3.0', '~1.5.8', false],
+            ['!=2.3.0', '~2.3', false],
+            ['!=2.3.0', '~2.4.', false],
 
-            array('~2.3.0', '1.5.8', false),
+            ['~2.3.0', '1.5.8', false],
 
-            array('~2.3.5', '>2.3.0', true),
-            array('~2.3.5', '>2.3.5', false),
-            array('~2.3.5', '>2.3.6', false),
+            ['~2.3.5', '>2.3.0', true],
+            ['~2.3.5', '>2.3.5', false],
+            ['~2.3.5', '>2.3.6', false],
 
-            array('~2.3.5', '>=2.3.0', true),
-            array('~2.3.5', '>=2.3.5', true),
-            array('~2.3.5', '>=2.3.6', false),
+            ['~2.3.5', '>=2.3.0', true],
+            ['~2.3.5', '>=2.3.5', true],
+            ['~2.3.5', '>=2.3.6', false],
 
-            array('~2.3.5', '<2.3.5', false),
-            array('~2.3.5', '<2.3.6', false),
-            array('~2.3.5', '<2.4.0', true),
+            ['~2.3.5', '<2.3.5', false],
+            ['~2.3.5', '<2.3.6', false],
+            ['~2.3.5', '<2.4.0', true],
 
-            array('~2.3.5', '<=2.3.5', false),
-            array('~2.3.5', '<=2.3.6', false),
-            array('~2.3.5', '<=2.4.0', true),
+            ['~2.3.5', '<=2.3.5', false],
+            ['~2.3.5', '<=2.3.6', false],
+            ['~2.3.5', '<=2.4.0', true],
 
-            array('~2.3.5', '!=2.3.0', true),
-            array('~2.3.5', '!=2.3.6', false),
-            array('~2.3.5', '<>2.4.0', true),
+            ['~2.3.5', '!=2.3.0', true],
+            ['~2.3.5', '!=2.3.6', false],
+            ['~2.3.5', '<>2.4.0', true],
 
-            array('~2.3.5', '~2.3', true),
-            array('~2.3.5', '~2.4', false),
-            array('~2.3.5', '~2.3', true),
-            array('~2.4.5', '~2.3', true),
-            array('~2.3', '~2.3.2', false),
-            array('~2.4', '~2.3.4', false),
-            array('~2.3.5', '~2.3.5', true),
-        );
+            ['~2.3.5', '~2.3', true],
+            ['~2.3.5', '~2.4', false],
+            ['~2.3.5', '~2.3', true],
+            ['~2.4.5', '~2.3', true],
+            ['~2.3', '~2.3.2', false],
+            ['~2.4', '~2.3.4', false],
+            ['~2.3.5', '~2.3.5', true],
+        ];
     }
 
     /**
@@ -497,230 +497,230 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     public function matchesProvider()
     {
-        return array(
-            array('1.0', '1.0', true),
-            array('1.5.8', '1.5.8', true),
-            array('1.0.0', '1.0', true),
-            array('1.5.0', '2.5', false),
-            array('2.3.0', '1.5.8', false),
+        return [
+            ['1.0', '1.0', true],
+            ['1.5.8', '1.5.8', true],
+            ['1.0.0', '1.0', true],
+            ['1.5.0', '2.5', false],
+            ['2.3.0', '1.5.8', false],
 
-            array('2.3.0', '>1.0', true),
-            array('2.3.0', '>2.3', false),
-            array('2.3.0', '>2.5', false),
-            array('=1.0.0.0', '>1.0.0.0', false),
+            ['2.3.0', '>1.0', true],
+            ['2.3.0', '>2.3', false],
+            ['2.3.0', '>2.5', false],
+            ['=1.0.0.0', '>1.0.0.0', false],
 
-            array('1.0.0', '>=1.0', true),
-            array('2.3.0', '>=1.0', true),
-            array('2.3.0', '>=5.2.0', false),
+            ['1.0.0', '>=1.0', true],
+            ['2.3.0', '>=1.0', true],
+            ['2.3.0', '>=5.2.0', false],
 
-            array('2.3.0', '<3.5.8', true),
-            array('2.3.0', '<2.3', false),
-            array('2.3.0', '<1.5.8', false),
+            ['2.3.0', '<3.5.8', true],
+            ['2.3.0', '<2.3', false],
+            ['2.3.0', '<1.5.8', false],
 
-            array('2.3.0', '<=2.3', true),
-            array('2.3.0', '<=2.3.0.0', true),
-            array('2.3.0', '<=0.3.0.0', false),
+            ['2.3.0', '<=2.3', true],
+            ['2.3.0', '<=2.3.0.0', true],
+            ['2.3.0', '<=0.3.0.0', false],
 
-            array('1.5.0', '!=2.5', true),
-            array('3.5.0', '!=2.5', true),
-            array('2.3.0', '!=2.3', false),
+            ['1.5.0', '!=2.5', true],
+            ['3.5.0', '!=2.5', true],
+            ['2.3.0', '!=2.3', false],
 
-            array('1.5.0', '<>2.5', true),
-            array('3.5.0', '<>2.5', true),
-            array('2.3.0', '<>2.3', false),
+            ['1.5.0', '<>2.5', true],
+            ['3.5.0', '<>2.5', true],
+            ['2.3.0', '<>2.3', false],
 
-            array('2.5.0', '~2.5', true),
-            array('2.5.1', '~2.5', true),
-            array('2.7.0', '~2.5', true),
-            array('3.0.0', '~2.5', false),
+            ['2.5.0', '~2.5', true],
+            ['2.5.1', '~2.5', true],
+            ['2.7.0', '~2.5', true],
+            ['3.0.0', '~2.5', false],
 
-            array('2.5.0', '~2.5.3', false),
-            array('2.5.1', '~2.5.3', false),
-            array('2.5.3', '~2.5.3', true),
-            array('2.5.4', '~2.5.3', true),
-            array('2.5.4.5', '~2.5.3', true),
-            array('2.7.0', '~2.5.3', false),
-            array('3.0.0', '~2.5.3', false),
+            ['2.5.0', '~2.5.3', false],
+            ['2.5.1', '~2.5.3', false],
+            ['2.5.3', '~2.5.3', true],
+            ['2.5.4', '~2.5.3', true],
+            ['2.5.4.5', '~2.5.3', true],
+            ['2.7.0', '~2.5.3', false],
+            ['3.0.0', '~2.5.3', false],
 
-            array('>2.3.0', '1.5.8', false),
+            ['>2.3.0', '1.5.8', false],
 
-            array('>2.3.0', '>1.5.8', true),
-            array('>2.3.0', '>2.3.0', true),
-            array('>2.3.0', '>2.3.0.1', true),
+            ['>2.3.0', '>1.5.8', true],
+            ['>2.3.0', '>2.3.0', true],
+            ['>2.3.0', '>2.3.0.1', true],
 
-            array('>2.3.0', '>=1.5.8', true),
-            array('>2.3.0', '>=2.3.0', true),
-            array('>2.3.0', '>=2.3.0.1', true),
+            ['>2.3.0', '>=1.5.8', true],
+            ['>2.3.0', '>=2.3.0', true],
+            ['>2.3.0', '>=2.3.0.1', true],
 
-            array('>2.3.0', '<1.5.8', false),
-            array('>2.3.0', '<2.3.0', false),
-            array('>2.3.0', '<2.3.2', true),
+            ['>2.3.0', '<1.5.8', false],
+            ['>2.3.0', '<2.3.0', false],
+            ['>2.3.0', '<2.3.2', true],
 
-            array('>2.3.0', '<=1.5.8', false),
-            array('>2.3.0', '<=2.3.0', false),
-            array('>2.3.0', '<=2.3.0.1', true),
+            ['>2.3.0', '<=1.5.8', false],
+            ['>2.3.0', '<=2.3.0', false],
+            ['>2.3.0', '<=2.3.0.1', true],
 
-            array('>2.3.0', '!=1.5.8', true),
-            array('>2.3.0', '!=2.3.0', true),
-            array('>2.3.0', '!=2.3.0.1', true),
+            ['>2.3.0', '!=1.5.8', true],
+            ['>2.3.0', '!=2.3.0', true],
+            ['>2.3.0', '!=2.3.0.1', true],
 
-            array('>2.3.0', '<>1.5.8', true),
-            array('>2.3.0', '<>2.3.0', true),
-            array('>2.3.0', '<>2.3.0.1', true),
+            ['>2.3.0', '<>1.5.8', true],
+            ['>2.3.0', '<>2.3.0', true],
+            ['>2.3.0', '<>2.3.0.1', true],
 
-            array('>2.3.0', '~1.5.8', false),
-            array('>2.3.0', '~2.3', true),
-            array('>2.3.0', '~2.4', true),
+            ['>2.3.0', '~1.5.8', false],
+            ['>2.3.0', '~2.3', true],
+            ['>2.3.0', '~2.4', true],
 
-            array('>=2.3.0', '1.5.8', false),
+            ['>=2.3.0', '1.5.8', false],
 
-            array('>=2.3.0', '>1.5.8', true),
-            array('>=2.3.0', '>2.3', true),
-            array('>=2.3.0', '>2.3.0.1', true),
+            ['>=2.3.0', '>1.5.8', true],
+            ['>=2.3.0', '>2.3', true],
+            ['>=2.3.0', '>2.3.0.1', true],
 
-            array('>=2.3.0', '>=1.5.8', true),
-            array('>=2.3.0', '>=2.3', true),
-            array('>=2.3.0', '>=2.3.0.1', true),
+            ['>=2.3.0', '>=1.5.8', true],
+            ['>=2.3.0', '>=2.3', true],
+            ['>=2.3.0', '>=2.3.0.1', true],
 
-            array('>=2.3.0', '<1.5.8', false),
-            array('>=2.3.0', '<2.3', false),
-            array('>=2.3.0', '<2.3.0.1', true),
+            ['>=2.3.0', '<1.5.8', false],
+            ['>=2.3.0', '<2.3', false],
+            ['>=2.3.0', '<2.3.0.1', true],
 
-            array('>=2.3.0', '<=1.5.8', false),
-            array('>=2.3.0', '<=2.3', true),
-            array('>=2.3.0', '<=2.3.0.1', true),
+            ['>=2.3.0', '<=1.5.8', false],
+            ['>=2.3.0', '<=2.3', true],
+            ['>=2.3.0', '<=2.3.0.1', true],
 
-            array('>=2.3.0', '!=1.5.8', true),
-            array('>=2.3.0', '!=2.3', true),
-            array('>=2.3.0', '!=2.3.0.1', true),
+            ['>=2.3.0', '!=1.5.8', true],
+            ['>=2.3.0', '!=2.3', true],
+            ['>=2.3.0', '!=2.3.0.1', true],
 
-            array('>=2.3.0', '<>1.5.8', true),
-            array('>=2.3.0', '<>2.3', true),
-            array('>=2.3.0', '<>2.3.0.1', true),
+            ['>=2.3.0', '<>1.5.8', true],
+            ['>=2.3.0', '<>2.3', true],
+            ['>=2.3.0', '<>2.3.0.1', true],
 
-            array('>=2.3.0', '~1.5.8', false),
-            array('>=2.3.0', '~2.3', true),
-            array('>=2.3.0', '~2.4.', true),
+            ['>=2.3.0', '~1.5.8', false],
+            ['>=2.3.0', '~2.3', true],
+            ['>=2.3.0', '~2.4.', true],
 
-            array('<2.3.0', '1.5.8', true),
+            ['<2.3.0', '1.5.8', true],
 
-            array('<2.3.0', '>1.5.8', true),
-            array('<2.3.0', '>2.3.0', false),
-            array('<2.3.0', '>2.3.0.1', false),
+            ['<2.3.0', '>1.5.8', true],
+            ['<2.3.0', '>2.3.0', false],
+            ['<2.3.0', '>2.3.0.1', false],
 
-            array('<2.3.0', '>=1.5.8', true),
-            array('<2.3.0', '>=2.3.0', false),
-            array('<2.3.0', '>=2.3.0.1', false),
+            ['<2.3.0', '>=1.5.8', true],
+            ['<2.3.0', '>=2.3.0', false],
+            ['<2.3.0', '>=2.3.0.1', false],
 
-            array('<2.3.0', '<1.5.8', true),
-            array('<2.3.0', '<2.3.0', true),
-            array('<2.3.0', '<2.3.0.1', true),
+            ['<2.3.0', '<1.5.8', true],
+            ['<2.3.0', '<2.3.0', true],
+            ['<2.3.0', '<2.3.0.1', true],
 
-            array('<2.3.0', '<=1.5.8', true),
-            array('<2.3.0', '<=2.3.0', true),
-            array('<2.3.0', '<=2.3.0.1', true),
+            ['<2.3.0', '<=1.5.8', true],
+            ['<2.3.0', '<=2.3.0', true],
+            ['<2.3.0', '<=2.3.0.1', true],
 
-            array('<2.3.0', '!=1.5.8', true),
-            array('<2.3.0', '!=2.3.0', true),
-            array('<2.3.0', '!=2.3.0.1', true),
+            ['<2.3.0', '!=1.5.8', true],
+            ['<2.3.0', '!=2.3.0', true],
+            ['<2.3.0', '!=2.3.0.1', true],
 
-            array('<2.3.0', '<>1.5.8', true),
-            array('<2.3.0', '<>2.3.0', true),
-            array('<2.3.0', '<>2.3.0.1', true),
+            ['<2.3.0', '<>1.5.8', true],
+            ['<2.3.0', '<>2.3.0', true],
+            ['<2.3.0', '<>2.3.0.1', true],
 
-            array('<2.3.0', '~1.5.8', true),
-            array('<2.3.0', '~2.3', false),
-            array('<2.3.0', '~2.4.', false),
+            ['<2.3.0', '~1.5.8', true],
+            ['<2.3.0', '~2.3', false],
+            ['<2.3.0', '~2.4.', false],
 
-            array('<=2.3.0', '1.5.8', true),
+            ['<=2.3.0', '1.5.8', true],
 
-            array('<=2.3.0', '>1.5.8', true),
-            array('<=2.3.0', '>2.3.0', false),
-            array('<=2.3.0', '>2.3.0.1', false),
+            ['<=2.3.0', '>1.5.8', true],
+            ['<=2.3.0', '>2.3.0', false],
+            ['<=2.3.0', '>2.3.0.1', false],
 
-            array('<=2.3.0', '>=1.5.8', true),
-            array('<=2.3.0', '>=2.3.0', true),
-            array('<=2.3.0', '>=2.3.0.1', false),
+            ['<=2.3.0', '>=1.5.8', true],
+            ['<=2.3.0', '>=2.3.0', true],
+            ['<=2.3.0', '>=2.3.0.1', false],
 
-            array('<=2.3.0', '<1.5.8', true),
-            array('<=2.3.0', '<2.3.0', true),
-            array('<=2.3.0', '<2.3.0.1', true),
+            ['<=2.3.0', '<1.5.8', true],
+            ['<=2.3.0', '<2.3.0', true],
+            ['<=2.3.0', '<2.3.0.1', true],
 
-            array('<=2.3.0', '<=1.5.8', true),
-            array('<=2.3.0', '<=2.3.0', true),
-            array('<=2.3.0', '<=2.3.0.1', true),
+            ['<=2.3.0', '<=1.5.8', true],
+            ['<=2.3.0', '<=2.3.0', true],
+            ['<=2.3.0', '<=2.3.0.1', true],
 
-            array('<=2.3.0', '!=1.5.8', true),
-            array('<=2.3.0', '!=2.3.0', true),
-            array('<=2.3.0', '!=2.3.0.1', true),
+            ['<=2.3.0', '!=1.5.8', true],
+            ['<=2.3.0', '!=2.3.0', true],
+            ['<=2.3.0', '!=2.3.0.1', true],
 
-            array('<=2.3.0', '<>1.5.8', true),
-            array('<=2.3.0', '<>2.3.0', true),
-            array('<=2.3.0', '<>2.3.0.1', true),
+            ['<=2.3.0', '<>1.5.8', true],
+            ['<=2.3.0', '<>2.3.0', true],
+            ['<=2.3.0', '<>2.3.0.1', true],
 
-            array('<=2.3.0', '~1.5.8', true),
-            array('<=2.3.0', '~2.3', true),
-            array('<=2.3.0', '~2.4.', false),
+            ['<=2.3.0', '~1.5.8', true],
+            ['<=2.3.0', '~2.3', true],
+            ['<=2.3.0', '~2.4.', false],
 
-            array('!=2.3.0', '1.5.8', true),
+            ['!=2.3.0', '1.5.8', true],
 
-            array('<>2.3.0', '>1.5.8', true),
-            array('!=2.3.0', '>2.3.0', true),
-            array('<>2.3.0', '>2.3.0.1', true),
+            ['<>2.3.0', '>1.5.8', true],
+            ['!=2.3.0', '>2.3.0', true],
+            ['<>2.3.0', '>2.3.0.1', true],
 
-            array('!=2.3.0', '>=1.5.8', true),
-            array('<>2.3.0', '>=2.3.0', true),
-            array('!=2.3.0', '>=2.3.0.1', true),
+            ['!=2.3.0', '>=1.5.8', true],
+            ['<>2.3.0', '>=2.3.0', true],
+            ['!=2.3.0', '>=2.3.0.1', true],
 
-            array('<>2.3.0', '<1.5.8', true),
-            array('!=2.3.0', '<2.3.0', true),
-            array('<>2.3.0', '<2.3.0.1', true),
+            ['<>2.3.0', '<1.5.8', true],
+            ['!=2.3.0', '<2.3.0', true],
+            ['<>2.3.0', '<2.3.0.1', true],
 
-            array('!=2.3.0', '<=1.5.8', true),
-            array('<>2.3.0', '<=2.3.0', true),
-            array('!=2.3.0', '<=2.3.0.1', true),
+            ['!=2.3.0', '<=1.5.8', true],
+            ['<>2.3.0', '<=2.3.0', true],
+            ['!=2.3.0', '<=2.3.0.1', true],
 
-            array('<>2.3.0', '!=1.5.8', true),
-            array('!=2.3.0', '!=2.3.0.0', true),
-            array('<>2.3.0', '!=2.3.0.1', true),
+            ['<>2.3.0', '!=1.5.8', true],
+            ['!=2.3.0', '!=2.3.0.0', true],
+            ['<>2.3.0', '!=2.3.0.1', true],
 
-            array('!=2.3.0', '<>1.5.8', true),
-            array('<>2.3.0', '<>2.3', true),
-            array('!=2.3.0', '<>2.3.0.1', true),
+            ['!=2.3.0', '<>1.5.8', true],
+            ['<>2.3.0', '<>2.3', true],
+            ['!=2.3.0', '<>2.3.0.1', true],
 
-            array('!=2.3.0', '~1.5.8', true),
-            array('!=2.3.0', '~2.3', true),
-            array('!=2.3.0', '~2.4.', true),
+            ['!=2.3.0', '~1.5.8', true],
+            ['!=2.3.0', '~2.3', true],
+            ['!=2.3.0', '~2.4.', true],
 
-            array('~2.3.0', '1.5.8', false),
+            ['~2.3.0', '1.5.8', false],
 
-            array('~2.3.5', '>2.3.0', true),
-            array('~2.3.5', '>2.3.5', true),
-            array('~2.3.5', '>2.3.6', true),
+            ['~2.3.5', '>2.3.0', true],
+            ['~2.3.5', '>2.3.5', true],
+            ['~2.3.5', '>2.3.6', true],
 
-            array('~2.3.5', '>=2.3.0', true),
-            array('~2.3.5', '>=2.3.5', true),
-            array('~2.3.5', '>=2.3.6', true),
+            ['~2.3.5', '>=2.3.0', true],
+            ['~2.3.5', '>=2.3.5', true],
+            ['~2.3.5', '>=2.3.6', true],
 
-            array('~2.3.5', '<2.3.5', false),
-            array('~2.3.5', '<2.3.6', true),
-            array('~2.3.5', '<2.4.0', true),
+            ['~2.3.5', '<2.3.5', false],
+            ['~2.3.5', '<2.3.6', true],
+            ['~2.3.5', '<2.4.0', true],
 
-            array('~2.3.5', '<=2.3.5', true),
-            array('~2.3.5', '<=2.3.6', true),
-            array('~2.3.5', '<=2.4.0', true),
+            ['~2.3.5', '<=2.3.5', true],
+            ['~2.3.5', '<=2.3.6', true],
+            ['~2.3.5', '<=2.4.0', true],
 
-            array('~2.3.5', '!=2.3.0', true),
-            array('~2.3.5', '!=2.3.6', true),
-            array('~2.3.5', '<>2.4.0', true),
+            ['~2.3.5', '!=2.3.0', true],
+            ['~2.3.5', '!=2.3.6', true],
+            ['~2.3.5', '<>2.4.0', true],
 
-            array('~2.3.5', '~2.3', true),
-            array('~2.3.5', '~2.4', false),
-            array('~2.3.5', '~2.3', true),
-            array('~2.4.5', '~2.3', true),
-            array('~2.3', '~2.3.2', true),
-            array('~2.4', '~2.3.4', false),
-            array('~2.3.5', '~2.3.5', true),
-        );
+            ['~2.3.5', '~2.3', true],
+            ['~2.3.5', '~2.4', false],
+            ['~2.3.5', '~2.3', true],
+            ['~2.4.5', '~2.3', true],
+            ['~2.3', '~2.3.2', true],
+            ['~2.4', '~2.3.4', false],
+            ['~2.3.5', '~2.3.5', true],
+        ];
     }
 }

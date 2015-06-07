@@ -70,7 +70,7 @@ class Version
             throw new \UnexpectedValueException('Invalid version: ' . $input);
         }
 
-        $numbers = array();
+        $numbers = [];
 
         if (isset($matches[1]) && strlen($matches[1]) > 0) {
             $numbers[] = $matches[1];

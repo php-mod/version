@@ -138,7 +138,7 @@ class SimpleConstraint extends Constraint
                 return false;
             }
             // > | >= VS * expect =
-            if (in_array((string) $this->getOperator(), array('>', '>='))) {
+            if (in_array((string) $this->getOperator(), ['>', '>='])) {
                 // > VS > OR >= VS >= OR > VS >=
                 if ((string) $constraint->getOperator() == (string) $this->getOperator() ||
                     (string) $constraint->getOperator() == '>='
@@ -146,7 +146,7 @@ class SimpleConstraint extends Constraint
                     return $this->version->compare($constraint->version) >= 0;
                 }
                 // > | >= VS <,<=
-                if (in_array((string) $constraint->getOperator(), array('<', '<='))) {
+                if (in_array((string) $constraint->getOperator(), ['<', '<='])) {
                     return false;
                 }
                 // >= VS * expect =,>=,<,<=
@@ -157,13 +157,13 @@ class SimpleConstraint extends Constraint
                     return $this->version->compare($constraint->version) >= 0;
                 }
             }
-            if (in_array((string) $this->getOperator(), array('<', '<='))) {
+            if (in_array((string) $this->getOperator(), ['<', '<='])) {
                 if ((string) $constraint->getOperator() == (string) $this->getOperator() ||
                     (string) $constraint->getOperator() == '<='
                 ) {
                     return $this->version->compare($constraint->version) <= 0;
                 }
-                if (in_array((string) $constraint->getOperator(), array('>', '>='))) {
+                if (in_array((string) $constraint->getOperator(), ['>', '>='])) {
                     return false;
                 }
                 if ((string) $this->getOperator() == '<=') {
@@ -173,8 +173,8 @@ class SimpleConstraint extends Constraint
                     return $this->version->compare($constraint->version) <= 0;
                 }
             }
-            if (in_array((string) $this->getOperator(), array('<>', '!='))) {
-                if (in_array((string) $constraint->getOperator(), array('<>', '!='))) {
+            if (in_array((string) $this->getOperator(), ['<>', '!='])) {
+                if (in_array((string) $constraint->getOperator(), ['<>', '!='])) {
                     return $this->version->compare($constraint->version) == 0;
                 }
                 return false;
