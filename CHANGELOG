@@ -1,5 +1,6 @@
-2.2.0 (unreleased)
+3.0.0 (unreleased)
   - New: Added helper class to enable use of inbuilt PHP sort methods (jenolan)
+  - PHP 5.3 is no more supported
 
 2.1.1
   - Fix:  Missed that there was a regex as well as inline parsing (jenolan)
