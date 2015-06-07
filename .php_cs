@@ -11,32 +11,41 @@ $config = Symfony\CS\Config\Config::create();
 $config->level(null);
 $config->fixers(
     array(
-        'braces',
-        'duplicate_semicolon',
-        'elseif',
-        'empty_return',
+    // PSR-0
+        'psr0',
+    // PSR-1
         'encoding',
+        'short_tag',
+    // PSR-2
+        'braces',
+        'elseif',
         'eof_ending',
         'function_call_space',
         'function_declaration',
         'indentation',
-        'join_function',
         'line_after_namespace',
         'linefeed',
+        'lowercase_constants',
         'lowercase_keywords',
-        'parenthesis',
-        'multiple_use',
         'method_argument_space',
-        'object_operator',
+        'multiple_use',
+        'parenthesis',
         'php_closing_tag',
-        'remove_lines_between_uses',
-        'long_array_syntax',
-        'short_tag',
-        'standardize_not_equal',
+        'single_line_after_imports',
         'trailing_spaces',
-        'unused_use',
         'visibility',
+    // Symfony
+        'duplicate_semicolon',
+        'empty_return',
+        'extra_empty_lines',
+        'join_function',
+        'object_operator',
+        'remove_lines_between_uses',
+        'standardize_not_equal',
+        'unused_use',
         'whitespacy_lines',
+    // Contrib
+        'long_array_syntax',
     )
 );
 $config->finder($finder);
