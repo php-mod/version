@@ -26,14 +26,16 @@ class MultiConstraint extends Constraint
     {
         if ($this->and) {
             foreach ($this->constraints as $c) {
-                if (!$c->matches($constraint))
+                if (!$c->matches($constraint)) {
                     return false;
+                }
             }
             return true;
         } else {
             foreach ($this->constraints as $c) {
-                if ($c->matches($constraint))
+                if ($c->matches($constraint)) {
                     return true;
+                }
             }
             return false;
         }
@@ -41,7 +43,7 @@ class MultiConstraint extends Constraint
 
     public function isSubsetOf(Constraint $constraint)
     {
-        if($constraint instanceof SimpleConstraint) {
+        if ($constraint instanceof SimpleConstraint) {
             foreach ($this->constraints as $child) {
                 if ($child->isSubsetOf($constraint)) {
                     return true;
@@ -49,24 +51,24 @@ class MultiConstraint extends Constraint
             }
             return false;
         }
-        if($constraint instanceof MultiConstraint) {
-            if(count($this->constraints) == 2) {
-                if(count($constraint->constraints) == 2) {
+        if ($constraint instanceof MultiConstraint) {
+            if (count($this->constraints) == 2) {
+                if (count($constraint->constraints) == 2) {
                     $min1 = $this->constraints[0];
                     $max1 = $this->constraints[1];
                     $min2 = $constraint->constraints[0];
                     $max2 = $constraint->constraints[1];
-                    if(
+                    if (
                         $min1 instanceof SimpleConstraint &&
                         $min2 instanceof SimpleConstraint &&
                         $max1 instanceof SimpleConstraint &&
                         $max2 instanceof SimpleConstraint
-                    ){
-                        if(
-                            in_array((string) $min1->getOperator() , array('>', '>=')) &&
-                            in_array((string) $min2->getOperator() , array('>', '>=')) &&
-                            in_array((string) $max1->getOperator() , array('<', '<=')) &&
-                            in_array((string) $max2->getOperator() , array('<', '<='))
+                    ) {
+                        if (
+                            in_array((string) $min1->getOperator(), array('>', '>=')) &&
+                            in_array((string) $min2->getOperator(), array('>', '>=')) &&
+                            in_array((string) $max1->getOperator(), array('<', '<=')) &&
+                            in_array((string) $max2->getOperator(), array('<', '<='))
                         ) {
                             return
                                 $min1->isSubsetOf($min2) &&
