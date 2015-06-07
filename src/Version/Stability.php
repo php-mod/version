@@ -4,7 +4,6 @@ namespace Version;
 
 class Stability
 {
-
     const REGEX = '[-|_|\.]{0,1}([R|r][C|c]|pl|a|alpha|[B|b][E|e][T|t][A|a]|b|B|patch|stable|p|[D|d][E|e][V|v]|[D|d])\.{0,1}(\d*)';
 
     /**
@@ -17,15 +16,13 @@ class Stability
      */
     private $number;
 
-    public function __construct( $stability = 'stable', $number = null )
+    public function __construct($stability = 'stable', $number = null)
     {
-        if( strlen( $stability ) == 0 )
-        {
+        if (strlen($stability) == 0) {
             $stability = 'stable';
         }
-        $stability = strtolower( $stability );
-        switch( $stability )
-        {
+        $stability = strtolower($stability);
+        switch ($stability) {
             case 'rc':
                 $stability = 'RC';
                 break;
@@ -69,31 +66,26 @@ class Stability
         return $this->stability;
     }
 
-    public function compare( Stability $stability )
+    public function compare(Stability $stability)
     {
-        if( $this->toInt( $this->stability ) > $this->toInt( $stability->stability ) )
-        {
+        if ($this->toInt($this->stability) > $this->toInt($stability->stability)) {
             return 1;
         }
-        if( $this->toInt( $this->stability ) < $this->toInt( $stability->stability ) )
-        {
+        if ($this->toInt($this->stability) < $this->toInt($stability->stability)) {
             return -1;
         }
-        if( $this->number > $stability->number )
-        {
+        if ($this->number > $stability->number) {
             return 1;
         }
-        if( $this->number < $stability->number )
-        {
+        if ($this->number < $stability->number) {
             return -1;
         }
         return 0;
     }
 
-    private function toInt( $stability )
+    private function toInt($stability)
     {
-        switch( $stability )
-        {
+        switch ($stability) {
             case 'dev':
                 return 1;
             case 'alpha':
@@ -107,7 +99,7 @@ class Stability
             case 'patch':
                 return 6;
             default:
-                throw new \InvalidArgumentException( 'Invalid stability: ' . $stability );
+                throw new \InvalidArgumentException('Invalid stability: ' . $stability);
         }
     }
 }

@@ -72,10 +72,18 @@ class Version
 
         $numbers = array();
 
-        if (isset($matches[1]) && strlen($matches[1]) > 0) $numbers[] = $matches[1];
-        if (isset($matches[2]) && strlen($matches[2]) > 0) $numbers[] = $matches[2];
-        if (isset($matches[3]) && strlen($matches[3]) > 0) $numbers[] = $matches[3];
-        if (isset($matches[4]) && strlen($matches[4]) > 0) $numbers[] = $matches[4];
+        if (isset($matches[1]) && strlen($matches[1]) > 0) {
+            $numbers[] = $matches[1];
+        }
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $numbers[] = $matches[2];
+        }
+        if (isset($matches[3]) && strlen($matches[3]) > 0) {
+            $numbers[] = $matches[3];
+        }
+        if (isset($matches[4]) && strlen($matches[4]) > 0) {
+            $numbers[] = $matches[4];
+        }
 
         if (empty($numbers)) {
             throw new \UnexpectedValueException('Invalid version: ' . $input);
@@ -102,8 +110,12 @@ class Version
             $version->setMinor($numbers[1]);
         }
 
-        if (isset($numbers[2])) $version->setRevision($numbers[2]);
-        if (isset($numbers[3])) $version->setMicro($numbers[3]);
+        if (isset($numbers[2])) {
+            $version->setRevision($numbers[2]);
+        }
+        if (isset($numbers[3])) {
+            $version->setMicro($numbers[3]);
+        }
 
         /* Stability */
 
@@ -209,12 +221,20 @@ class Version
                 $this->major . '.' .
                 $this->minor . '.' .
                 $this->revision;
-                if($this->micro !== null) $version .= '.' . (int)$this->micro;
+            if ($this->micro !== null) {
+                $version .= '.' . (int)$this->micro;
+            }
         } else {
             $version = $this->major;
-            if ($this->minor) $version .= '-' . $this->minor;
-            if ($this->revision) $version .= '-' . $this->revision;
-            if ($this->micro) $version .= '-' . $this->micro;
+            if ($this->minor) {
+                $version .= '-' . $this->minor;
+            }
+            if ($this->revision) {
+                $version .= '-' . $this->revision;
+            }
+            if ($this->micro) {
+                $version .= '-' . $this->micro;
+            }
         }
         if (!$this->stability->isStable()) {
             $version .= '-' . (string)$this->stability;
@@ -233,38 +253,39 @@ class Version
     public function getVersionStability()
     {
         $stability = $this->getStability()->getStability();
-        if($stability == 'patch')
+        if ($stability == 'patch') {
             return 'stable';
+        }
         return $stability;
     }
 
     public function compare(Version $version)
     {
-        if($this->major < $version->major) {
+        if ($this->major < $version->major) {
             return -1;
         }
-        if($this->major > $version->major) {
+        if ($this->major > $version->major) {
             return 1;
         }
 
-        if($this->minor < $version->minor) {
+        if ($this->minor < $version->minor) {
             return -1;
         }
-        if($this->minor > $version->minor) {
+        if ($this->minor > $version->minor) {
             return 1;
         }
 
-        if($this->revision < $version->revision) {
+        if ($this->revision < $version->revision) {
             return -1;
         }
-        if($this->revision > $version->revision) {
+        if ($this->revision > $version->revision) {
             return 1;
         }
 
-        if($this->micro < $version->micro) {
+        if ($this->micro < $version->micro) {
             return -1;
         }
-        if($this->micro > $version->micro) {
+        if ($this->micro > $version->micro) {
             return 1;
         }
 

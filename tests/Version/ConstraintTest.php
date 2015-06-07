@@ -9,7 +9,6 @@ use Version\Constraint\SimpleConstraint;
 
 class ConstraintTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @dataProvider simpleConstraints
      * @param $input
@@ -724,5 +723,4 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
             array('~2.3.5', '~2.3.5', true),
         );
     }
-
 }

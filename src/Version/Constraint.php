@@ -14,7 +14,7 @@ abstract class Constraint
      * @param Constraint $constraint
      * @return bool
      */
-    public abstract function matches(Constraint $constraint);
+    abstract public function matches(Constraint $constraint);
 
     /**
      * Parse a string and return a Constraint.
@@ -68,7 +68,7 @@ abstract class Constraint
             '(?:' . Stability::REGEX . ')?' .
             '$/';
 
-        if(!preg_match($regex, $input, $matches)) {
+        if (!preg_match($regex, $input, $matches)) {
             throw new \UnexpectedValueException('Invalid type: ' . $input);
         }
 
@@ -81,10 +81,18 @@ abstract class Constraint
 
         $parts = array();
 
-        if (isset($matches[2]) && strlen($matches[2]) > 0) $parts[] = $matches[2];
-        if (isset($matches[3]) && strlen($matches[3]) > 0) $parts[] = $matches[3];
-        if (isset($matches[4]) && strlen($matches[4]) > 0) $parts[] = $matches[4];
-        if (isset($matches[5]) && strlen($matches[5]) > 0) $parts[] = $matches[5];
+        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+            $parts[] = $matches[2];
+        }
+        if (isset($matches[3]) && strlen($matches[3]) > 0) {
+            $parts[] = $matches[3];
+        }
+        if (isset($matches[4]) && strlen($matches[4]) > 0) {
+            $parts[] = $matches[4];
+        }
+        if (isset($matches[5]) && strlen($matches[5]) > 0) {
+            $parts[] = $matches[5];
+        }
 
         if ((string)$operator == '~') {
             $end = count($parts);
@@ -135,9 +143,15 @@ abstract class Constraint
         }
 
         $version = new Version($parts[0]);
-        if (isset($parts[1])) $version->setMinor($parts[1]);
-        if (isset($parts[2])) $version->setRevision($parts[2]);
-        if (isset($parts[3])) $version->setMicro($parts[3]);
+        if (isset($parts[1])) {
+            $version->setMinor($parts[1]);
+        }
+        if (isset($parts[2])) {
+            $version->setRevision($parts[2]);
+        }
+        if (isset($parts[3])) {
+            $version->setMicro($parts[3]);
+        }
 
         if (isset($matches[6]) && strlen($matches[6]) > 0) {
             if (strtolower($matches[5]) == 'rc') {
@@ -163,9 +177,15 @@ abstract class Constraint
                     die;
                 }
                 $maxVersion = new Version($max[0]);
-                if (isset($max[1])) $maxVersion->setMinor($max[1]);
-                if (isset($max[2])) $maxVersion->setRevision($max[2]);
-                if (isset($max[3])) $maxVersion->setMicro($max[3]);
+                if (isset($max[1])) {
+                    $maxVersion->setMinor($max[1]);
+                }
+                if (isset($max[2])) {
+                    $maxVersion->setRevision($max[2]);
+                }
+                if (isset($max[3])) {
+                    $maxVersion->setMicro($max[3]);
+                }
 
                 if ((string)$version == '0.0.0.0') {
                     return new SimpleConstraint(new Operator('<'), $maxVersion);
