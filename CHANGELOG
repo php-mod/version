@@ -1,0 +1,14 @@
+2.2.0 (unreleased)
+  - New: Added helper class to enable use of inbuilt PHP sort methods (jenolan)
+
+2.1.1
+  - Fix:  Missed that there was a regex as well as inline parsing (jenolan)
+
+2.1.0
+  - New: Added 'dev' to stability (jenolan)
+
+2.0.1
+
+2.0.0
+
+1.0.0
