@@ -41,7 +41,7 @@ class Version
         $this->setMinor($minor);
         $this->setRevision($revision);
         $this->setMicro($micro);
-        if ($stability == null) {
+        if ($stability === null) {
             $stability = new Stability();
         }
         $this->setStability($stability);
