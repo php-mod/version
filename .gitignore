@@ -8,7 +8,6 @@
 
 # Eclipse files
 *.pydevproject
-.metadata
 .gradle
 /tmp/
 *.tmp
