@@ -4,7 +4,7 @@ namespace Version;
 
 class Stability
 {
-    const REGEX = '[-_\.]?(rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.{0,1}(\d*)';
+    const REGEX = '[-_\.]?(rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.?(\d*)';
 
     /**
      * @var string
