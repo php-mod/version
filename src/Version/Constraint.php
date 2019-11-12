@@ -66,7 +66,7 @@ abstract class Constraint
             '(?:(\d+|\*|x)\.)?' .
             '(?:(\d+|\*|x))?' .
             '(?:' . Stability::REGEX . ')?' .
-            '$/';
+            '$/i';
 
         if (!preg_match($regex, $input, $matches)) {
             throw new \UnexpectedValueException('Invalid type: ' . $input);

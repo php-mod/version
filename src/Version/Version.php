@@ -64,7 +64,7 @@ class Version
             '(?:(\d+)\.)?' .
             '(?:(\d+))?' .
             '(?:' . Stability::REGEX . ')?' .
-            '$/';
+            '$/i';
 
         if (!preg_match($regex, $input, $matches)) {
             throw new \UnexpectedValueException('Invalid version: ' . $input);
