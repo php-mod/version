@@ -10,7 +10,7 @@ class Operator
 
     public function __construct($operator)
     {
-        if ($operator == '==') {
+        if ($operator === '==') {
             $operator = '=';
         }
         if (!in_array($operator, array('=', '<', '>', '<=', '>=', '<>', '!=', '~'))) {
@@ -39,23 +39,23 @@ class Operator
      */
     public function compare(Version $version1, Version $version2)
     {
-        if ($this->operator == '=') {
-            return $version1->compare($version2) == 0;
+        if ($this->operator === '=') {
+            return $version1->compare($version2) === 0;
         }
-        if ($this->operator == '>=') {
+        if ($this->operator === '>=') {
             return $version1->compare($version2) >= 0;
         }
-        if ($this->operator == '>') {
+        if ($this->operator === '>') {
             return $version1->compare($version2) > 0;
         }
-        if ($this->operator == '<=') {
+        if ($this->operator === '<=') {
             return $version1->compare($version2) <= 0;
         }
-        if ($this->operator == '<') {
+        if ($this->operator === '<') {
             return $version1->compare($version2) < 0;
         }
-        if ($this->operator == '!=' || $this->operator == '<>') {
-            return $version1->compare($version2) != 0;
+        if ($this->operator === '!=' || $this->operator === '<>') {
+            return $version1->compare($version2) !== 0;
         }
         throw new \Exception('Comparison by ' . $this->operator . ' Not implemented yet');
     }

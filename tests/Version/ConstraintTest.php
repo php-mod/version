@@ -11,15 +11,18 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider simpleConstraints
-     * @param $input
-     * @param $expected
+     *
+     * @param        $input
+     * @param        $expected
      * @param string $message
+     *
+     * @throws \Exception
      */
     public function testParseConstraintsSimple($input, $expected, $message = '')
     {
         $this->assertSame(
-            (string) $expected,
-            (string) Constraint::parse($input),
+            (string)$expected,
+            (string)Constraint::parse($input),
             $message . ' INPUT: ' . $input
         );
     }
@@ -32,59 +35,59 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
                 new SimpleConstraint(new Operator('<'), Version::parse('1.2.3.4')),
                 'lesser than override'
             ),
-            'match any'            =>
+            'match any' =>
                 array(
                     '*',
                     new AnythingConstraint()
                 ),
-            'match any/2'          =>
+            'match any/2' =>
                 array(
                     '*.*',
                     new AnythingConstraint()
                 ),
-            'match any/3'          =>
+            'match any/3' =>
                 array(
                     '*.x.*',
                     new AnythingConstraint()
                 ),
-            'match any/4'          => array('x.x.x.*',
+            'match any/4' => array('x.x.x.*',
                 new AnythingConstraint()),
-            'not equal'            => array('<>1.0.0',
+            'not equal' => array('<>1.0.0',
                 new SimpleConstraint(new Operator('<>'),
                     Version::parse('1.0.0.0'))),
-            'not equal/2'          => array('!=1.0.0',
+            'not equal/2' => array('!=1.0.0',
                 new SimpleConstraint(new Operator('!='),
                     Version::parse('1.0.0.0'))),
-            'greater than'         => array('>1.0.0',
+            'greater than' => array('>1.0.0',
                 new SimpleConstraint(new Operator('>'),
                     Version::parse('1.0.0.0'))),
-            'lesser than'          =>
+            'lesser than' =>
                 array(
                     '<1.2.3.4',
                     new SimpleConstraint(new Operator('<'), Version::parse('1.2.3.4'))
                 ),
-            'less/eq than'         => array('<=1.2.3',
+            'less/eq than' => array('<=1.2.3',
                 new SimpleConstraint(new Operator('<='),
                     Version::parse('1.2.3.0'))),
-            'great/eq than'        => array('>=1.2.3',
+            'great/eq than' => array('>=1.2.3',
                 new SimpleConstraint(new Operator('>='),
                     Version::parse('1.2.3.0'))),
-            'equals'               => array('=1.2.3',
+            'equals' => array('=1.2.3',
                 new SimpleConstraint(new Operator('='),
                     Version::parse('1.2.3.0'))),
-            'double equals'        => array('==1.2.3',
+            'double equals' => array('==1.2.3',
                 new SimpleConstraint(new Operator('='),
                     Version::parse('1.2.3.0'))),
-            'no op means eq'       => array('1.2.3',
+            'no op means eq' => array('1.2.3',
                 new SimpleConstraint(new Operator('='),
                     Version::parse('1.2.3.0'))),
-            'completes version'    => array('=1.0',
+            'completes version' => array('=1.0',
                 new SimpleConstraint(new Operator('='),
                     Version::parse('1.0.0.0'))),
-            'shorthand beta'       => array('1.2.3b5',
+            'shorthand beta' => array('1.2.3b5',
                 new SimpleConstraint(new Operator('='),
                     Version::parse('1.2.3.0-beta5'))),
-            'accepts spaces'       => array('>= 1.2.3',
+            'accepts spaces' => array('>= 1.2.3',
                 new SimpleConstraint(new Operator('>='),
                     Version::parse('1.2.3.0'))),
         );
@@ -93,6 +96,7 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException UnexpectedValueException
      * @expectedExceptionMessage Invalid operator "~>", you probably meant to use the "~" operator
+     * @throws \Exception
      */
     public function testParseConstraintsNudgesRubyDevsTowardsThePathOfRighteousness()
     {
@@ -101,9 +105,12 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider wildcardConstraints
+     *
      * @param $input
      * @param $min
      * @param $max
+     *
+     * @throws \Exception
      */
     public function testParseConstraintsWildcard($input, $min, $max)
     {
@@ -113,33 +120,36 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
             $expected = $max;
         }
 
-        $this->assertSame((string) $expected, (string) Constraint::parse($input));
+        $this->assertSame((string)$expected, (string)Constraint::parse($input));
     }
 
     public function wildcardConstraints()
     {
         return array(
-            array('2.*',     new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
+            array('2.*', new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('3.0.0.0'))),
-            array('2.0.*',   new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
+            array('2.0.*', new SimpleConstraint(new Operator('>='), Version::parse('2.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.1.0.0'))),
-            array('2.2.x',   new SimpleConstraint(new Operator('>='), Version::parse('2.2.0.0')),
+            array('2.2.x', new SimpleConstraint(new Operator('>='), Version::parse('2.2.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.3.0.0'))),
             array('2.1.3.*', new SimpleConstraint(new Operator('>='), Version::parse('2.1.3.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.1.4.0'))),
-            array('20.*',    new SimpleConstraint(new Operator('>='), Version::parse('20.0.0.0')),
+            array('20.*', new SimpleConstraint(new Operator('>='), Version::parse('20.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('21.0.0.0'))),
-            array('2.10.x',  new SimpleConstraint(new Operator('>='), Version::parse('2.10.0.0')),
+            array('2.10.x', new SimpleConstraint(new Operator('>='), Version::parse('2.10.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.11.0.0'))),
-            array('0.*',     null, new SimpleConstraint(new Operator('<'), Version::parse('1.0.0.0'))),
+            array('0.*', null, new SimpleConstraint(new Operator('<'), Version::parse('1.0.0.0'))),
         );
     }
 
     /**
      * @dataProvider tildeConstraints
+     *
      * @param $input
      * @param $min
      * @param $max
+     *
+     * @throws \Exception
      */
     public function testParseTildeWildcard($input, $min, $max)
     {
@@ -150,8 +160,8 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertSame(
-            (string) $expected,
-            (string) Constraint::parse($input),
+            (string)$expected,
+            (string)Constraint::parse($input),
             'INPUT: ' . $input
         );
     }
@@ -159,21 +169,21 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     public function tildeConstraints()
     {
         return array(
-            array('~1',       new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+            array('~1', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+            array('~1.0', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0.0',     new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
+            array('~1.0.0', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('1.1.0.0'))),
-            array('~1.2',     new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0')),
+            array('~1.2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2.3',   new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.0')),
+            array('~1.2.3', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.0')),
                 new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
             array('~1.2.3.4', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.4')),
                 new SimpleConstraint(new Operator('<'), Version::parse('1.2.4.0'))),
-            array('~1.2-beta',new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta')),
+            array('~1.2-beta', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2-b2',  new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
+            array('~1.2-b2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
             array('~1.2-BETA2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
                 new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
@@ -184,14 +194,20 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testParseConstraintsMulti()
     {
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
         $second = new SimpleConstraint(new Operator('<='), Version::parse('3.0.0.0'));
         $multi = new MultiConstraint(array($first, $second));
-        $this->assertSame((string) $multi, (string) Constraint::parse('>2.0,<=3.0'));
+        $this->assertSame((string)$multi, (string)Constraint::parse('>2.0,<=3.0'));
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testParseConstraintsMultiDisjunctiveHasPrioOverConjuctive()
     {
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
@@ -199,21 +215,27 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         $third = new SimpleConstraint(new Operator('>'), Version::parse('2.0.6.0'));
         $multi1 = new MultiConstraint(array($first, $second));
         $multi2 = new MultiConstraint(array($multi1, $third), false);
-        $this->assertSame((string) $multi2, (string) Constraint::parse('>2.0,<2.0.5 | >2.0.6'));
+        $this->assertSame((string)$multi2, (string)Constraint::parse('>2.0,<2.0.5 | >2.0.6'));
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testParseConstraintsMultiWithStabilities()
     {
         $first = new SimpleConstraint(new Operator('>'), Version::parse('2.0.0.0'));
         $second = new SimpleConstraint(new Operator('<='), Version::parse('3.0.0.0'));
         $multi = new MultiConstraint(array($first, $second));
-        $this->assertSame((string) $multi, (string) Constraint::parse('>2.0,<=3.0'));
+        $this->assertSame((string)$multi, (string)Constraint::parse('>2.0,<=3.0'));
     }
 
     /**
      * @dataProvider failingConstraints
      * @expectedException UnexpectedValueException
+     *
      * @param $input
+     *
+     * @throws \Exception
      */
     public function testParseConstraintsFails($input)
     {
@@ -223,16 +245,19 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     public function failingConstraints()
     {
         return array(
-            'empty '            => array(''),
-            'invalid version'   => array('1.0.0-meh'),
+            'empty ' => array(''),
+            'invalid version' => array('1.0.0-meh'),
         );
     }
 
     /**
      * @dataProvider isSubsetOfProvider
+     *
      * @param $constraint1
      * @param $constraint2
      * @param $expected
+     *
+     * @throws \Exception
      */
     public function testIsSubsetOf($constraint1, $constraint2, $expected)
     {
@@ -242,8 +267,8 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $expected,
             $constraint1->isSubsetOf($constraint2),
-            (string) $constraint1 . ($expected ? '' : ' does\'nt') .
-            ' satisfy ' . (string) $constraint2
+            $constraint1 . ($expected ? '' : ' does\'nt') .
+            ' satisfy ' . $constraint2
         );
     }
 
@@ -478,9 +503,12 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider matchesProvider
+     *
      * @param $constraint1
      * @param $constraint2
      * @param $expected
+     *
+     * @throws \Exception
      */
     public function testMatches($constraint1, $constraint2, $expected)
     {
@@ -490,8 +518,8 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $expected,
             $constraint1->matches($constraint2),
-            (string) $constraint1 . ($expected ? '' : ' does\'nt') .
-            ' matches ' . (string) $constraint2
+            $constraint1 . ($expected ? '' : ' does\'nt') .
+            ' matches ' . $constraint2
         );
     }
 

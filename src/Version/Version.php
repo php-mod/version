@@ -30,6 +30,11 @@ class Version
     private $stability;
 
     /**
+     * @var string
+     */
+    private $date;
+
+    /**
      * @var bool
      */
     private $regular = true;
@@ -49,20 +54,21 @@ class Version
 
     /**
      * @param string $input
+     *
      * @return Version
      */
     public static function parse($input)
     {
-        if (strlen($input) < 1) {
+        if ('' === $input) {
             throw new \UnexpectedValueException('Empty entry');
         }
 
         $regex = '/^' .
             'v?' .
-            '(?:(\d+)[-|\.])?' .
-            '(?:(\d+)[-|\.])?' .
-            '(?:(\d+)\.)?' .
-            '(?:(\d+))?' .
+            '(?:(?P<major>\d+)[-|\.])?' .
+            '(?:(?P<minor>\d+)[-|\.])?' .
+            '(?:(?P<revision>\d+)\.)?' .
+            '(?:(?P<micro>\d+))?' .
             '(?:' . Stability::REGEX . ')?' .
             '$/i';
 
@@ -72,16 +78,19 @@ class Version
 
         $numbers = array();
 
-        if (isset($matches[1]) && strlen($matches[1]) > 0) {
+        if (isset($matches['major']) && '' !== $matches['major']) {
             $numbers[] = $matches[1];
         }
-        if (isset($matches[2]) && strlen($matches[2]) > 0) {
+
+        if (isset($matches['minor']) && '' !== $matches['minor']) {
             $numbers[] = $matches[2];
         }
-        if (isset($matches[3]) && strlen($matches[3]) > 0) {
+
+        if (isset($matches['revision']) && '' !== $matches['revision']) {
             $numbers[] = $matches[3];
         }
-        if (isset($matches[4]) && strlen($matches[4]) > 0) {
+
+        if (isset($matches['micro']) && '' !== $matches[4]) {
             $numbers[] = $matches[4];
         }
 
@@ -94,14 +103,8 @@ class Version
         $version = new Version($numbers[0]);
 
         if (
-            strlen($numbers[0]) == 14 ||
-            strlen($numbers[0]) == 8 ||
-            strlen($numbers[0]) == 6 ||
-            (
-                strlen($numbers[0]) == 4 &&
-                isset($numbers[1]) &&
-                strlen($numbers[1]) == 2
-            )
+            in_array(strlen($numbers[0]), [14, 8, 6], true) ||
+            (strlen($numbers[0]) === 4 && isset($numbers[1]) && strlen($numbers[1]) === 2)
         ) {
             $version->setRegularity(false);
         }
@@ -119,8 +122,12 @@ class Version
 
         /* Stability */
 
-        if (isset($matches[5]) && strlen($matches[5]) > 0) {
-            $version->setStability(new Stability($matches[5], $matches[6]));
+        if (isset($matches['stability']) && '' !== $matches['stability']) {
+            $version->setStability(new Stability($matches['stability'], $matches['stabilityVersion']));
+        }
+
+        if (isset($matches['date']) && '' !== $matches['date']) {
+            $version->setDate($matches['date']);
         }
 
         return $version;
@@ -214,6 +221,22 @@ class Version
         $this->stability = $stability;
     }
 
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
     public function __toString()
     {
         if ($this->regular) {
@@ -222,7 +245,7 @@ class Version
                 $this->minor . '.' .
                 $this->revision;
             if ($this->micro !== null) {
-                $version .= '.' . (int)$this->micro;
+                $version .= '.' . $this->micro;
             }
         } else {
             $version = $this->major;
@@ -236,10 +259,16 @@ class Version
                 $version .= '-' . $this->micro;
             }
         }
-        if (!$this->stability->isStable()) {
-            $version .= '-' . (string)$this->stability;
+
+        if ($this->date) {
+            $version .= '-' . $this->date;
         }
-        return $version;
+
+        if (!$this->stability->isStable()) {
+            $version .= '-' . $this->stability;
+        }
+
+        return (string)$version;
     }
 
     /**
@@ -253,7 +282,7 @@ class Version
     public function getVersionStability()
     {
         $stability = $this->getStability()->getStability();
-        if ($stability == 'patch') {
+        if ($stability === 'patch') {
             return 'stable';
         }
         return $stability;
@@ -278,14 +307,24 @@ class Version
         if ($this->revision < $version->revision) {
             return -1;
         }
+
         if ($this->revision > $version->revision) {
             return 1;
         }
 
-        if ($this->micro < $version->micro) {
+        if (($this->micro ?: 0) < ($version->micro ?: 0)) {
             return -1;
         }
-        if ($this->micro > $version->micro) {
+
+        if (($this->micro ?: 0) > ($version->micro ?: 0)) {
+            return 1;
+        }
+
+        if (($this->date ?: 0) < ($version->date ?: 0)) {
+            return -1;
+        }
+
+        if (($this->date ?: 0) > ($version->date ?: 0)) {
             return 1;
         }
 

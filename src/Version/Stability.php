@@ -4,7 +4,9 @@ namespace Version;
 
 class Stability
 {
-    const REGEX = '[-_\.]?(rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.?(\d*)';
+    const REGEX = '[-_\.]?(?:(?P<stability>rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.?(?P<stabilityVersion>\d*)|' .
+    '(?P<date>[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1]))'
+    . ')';
 
     /**
      * @var string
@@ -18,7 +20,7 @@ class Stability
 
     public function __construct($stability = 'stable', $number = null)
     {
-        if (strlen($stability) == 0) {
+        if ('' === $stability) {
             $stability = 'stable';
         }
         $stability = strtolower($stability);
@@ -45,7 +47,7 @@ class Stability
                 break;
         }
         $this->stability = $stability;
-        $this->number    = $number;
+        $this->number = $number;
     }
 
     public function __toString()
@@ -55,7 +57,7 @@ class Stability
 
     public function isStable()
     {
-        return $this->stability == 'stable';
+        return $this->stability === 'stable';
     }
 
     /**
