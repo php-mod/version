@@ -23,7 +23,6 @@ matrix:
       env:
         - EXECUTE_TEST_COVERALLS=true
     - php: 7.0
-    - php: hhvm 
     - php: 7.1
     - php: 7.2
     - php: 7.3
