@@ -103,7 +103,7 @@ class Version
         $version = new Version($numbers[0]);
 
         if (
-            in_array(strlen($numbers[0]), [14, 8, 6], true) ||
+            in_array(strlen($numbers[0]), array(14, 8, 6), true) ||
             (strlen($numbers[0]) === 4 && isset($numbers[1]) && strlen($numbers[1]) === 2)
         ) {
             $version->setRegularity(false);
