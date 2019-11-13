@@ -60,7 +60,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
             Version::parse($input);
             $this->fail('Waiting exception with input: ' . $input);
         } catch (\UnexpectedValueException $e) {
-            $this->assertInstanceOf(\UnexpectedValueException::class, $e);
+            $this->assertInstanceOf('UnexpectedValueException', $e);
         }
     }
 
