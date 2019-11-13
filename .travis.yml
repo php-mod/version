@@ -30,11 +30,11 @@ matrix:
 
 before_install:
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
-  - composer self-update
+  - composer self-update --disable-tls
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then composer require --dev --no-update satooshi/php-coveralls ; fi
 
 install:
-  - travis_retry composer install --no-interaction --ignore-platform-reqs
+  - travis_retry composer install --no-interaction --ignore-platform-reqs --disable-tls
 
 script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover clover.xml ; fi
