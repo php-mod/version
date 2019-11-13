@@ -34,6 +34,7 @@ before_install:
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
+  - composer show
 
 script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover clover.xml ; fi
