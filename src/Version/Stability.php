@@ -4,7 +4,7 @@ namespace Version;
 
 class Stability
 {
-    const REGEX = '[-_\.]?(?:(?P<stability>rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.?(?P<stabilityVersion>\d*)|(?P<date>[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1])))';
+    const REGEX = '[-_\.]?(?:(?P<stability>rc|pl|a|alpha|beta|b|patch|stable|p|dev|d)\.?(?P<stabilityVersion>\d*)|(?P<date>[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2][0-9]|3[0-1]))[\.-]?(?P<dateVersion>\d*))';
 
     /**
      * @var string
@@ -21,7 +21,9 @@ class Stability
         if ('' === $stability) {
             $stability = 'stable';
         }
+
         $stability = strtolower($stability);
+
         switch ($stability) {
             case 'rc':
                 $stability = 'RC';
@@ -44,6 +46,7 @@ class Stability
                 $stability = 'dev';
                 break;
         }
+
         $this->stability = $stability;
         $this->number = $number;
     }
@@ -101,5 +104,13 @@ class Stability
             default:
                 throw new \InvalidArgumentException('Invalid stability: ' . $stability);
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 }

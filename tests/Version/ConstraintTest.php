@@ -153,6 +153,9 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseTildeWildcard($input, $min, $max)
     {
+        $min = new SimpleConstraint(new Operator('>='), Version::parse($min));
+        $max = new SimpleConstraint(new Operator('<'), Version::parse($max));
+
         if ($min) {
             $expected = new MultiConstraint(array($min, $max));
         } else {
@@ -169,28 +172,17 @@ class ConstraintTest extends \PHPUnit_Framework_TestCase
     public function tildeConstraints()
     {
         return array(
-            array('~1', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.0.0', new SimpleConstraint(new Operator('>='), Version::parse('1.0.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.1.0.0'))),
-            array('~1.2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2.3', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
-            array('~1.2.3.4', new SimpleConstraint(new Operator('>='), Version::parse('1.2.3.4')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.2.4.0'))),
-            array('~1.2-beta', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2-b2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2-BETA2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.0.0-beta2')),
-                new SimpleConstraint(new Operator('<'), Version::parse('2.0.0.0'))),
-            array('~1.2.2', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
-            array('~1.2.2-stable', new SimpleConstraint(new Operator('>='), Version::parse('1.2.2.0-stable')),
-                new SimpleConstraint(new Operator('<'), Version::parse('1.3.0.0'))),
+            array('~1', '1.0.0.0', '2.0.0.0'),
+            array('~1.0', '1.0.0.0', '2.0.0.0'),
+            array('~1.0.0', '1.0.0.0', '1.1.0.0'),
+            array('~1.2', '1.2.0.0', '2.0.0.0'),
+            array('~1.2.3', '1.2.3.0', '1.3.0.0'),
+            array('~1.2.3.4', '1.2.3.4', '1.2.4.0'),
+            array('~1.2-beta', '1.2.0.0-beta', '2.0.0.0'),
+            array('~1.2-b2', '1.2.0.0-beta2', '2.0.0.0'),
+            array('~1.2-BETA2', '1.2.0.0-beta2', '2.0.0.0'),
+            array('~1.2.2', '1.2.2.0', '1.3.0.0'),
+            array('~1.2.2-stable', '1.2.2.0-stable', '1.3.0.0'),
         );
     }
 

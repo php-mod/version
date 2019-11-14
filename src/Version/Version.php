@@ -35,6 +35,11 @@ class Version
     private $date;
 
     /**
+     * @var int
+     */
+    private $dateVersion;
+
+    /**
      * @var bool
      */
     private $regular = true;
@@ -127,7 +132,7 @@ class Version
         }
 
         if (isset($matches['date']) && '' !== $matches['date']) {
-            $version->setDate($matches['date']);
+            $version->setDate($matches['date'], $matches['dateVersion']);
         }
 
         return $version;
@@ -231,44 +236,12 @@ class Version
 
     /**
      * @param string $date
+     * @param int    $dateVersion
      */
-    public function setDate($date)
+    public function setDate($date, $dateVersion)
     {
         $this->date = $date;
-    }
-
-    public function __toString()
-    {
-        if ($this->regular) {
-            $version =
-                $this->major . '.' .
-                $this->minor . '.' .
-                $this->revision;
-            if ($this->micro !== null) {
-                $version .= '.' . $this->micro;
-            }
-        } else {
-            $version = $this->major;
-            if ($this->minor) {
-                $version .= '-' . $this->minor;
-            }
-            if ($this->revision) {
-                $version .= '-' . $this->revision;
-            }
-            if ($this->micro) {
-                $version .= '-' . $this->micro;
-            }
-        }
-
-        if ($this->date) {
-            $version .= '-' . $this->date;
-        }
-
-        if (!$this->stability->isStable()) {
-            $version .= '-' . $this->stability;
-        }
-
-        return (string)$version;
+        $this->dateVersion = $dateVersion;
     }
 
     /**
@@ -282,9 +255,11 @@ class Version
     public function getVersionStability()
     {
         $stability = $this->getStability()->getStability();
+
         if ($stability === 'patch') {
             return 'stable';
         }
+
         return $stability;
     }
 
@@ -328,6 +303,52 @@ class Version
             return 1;
         }
 
+        if (($this->dateVersion ?: 0) < ($version->dateVersion ?: 0)) {
+            return -1;
+        }
+
+        if (($this->dateVersion ?: 0) > ($version->dateVersion ?: 0)) {
+            return 1;
+        }
+
         return $this->stability->compare($version->stability);
+    }
+
+    public function __toString()
+    {
+        if ($this->regular) {
+            $version =
+                $this->major . '.' .
+                $this->minor . '.' .
+                $this->revision;
+            if ($this->micro !== null) {
+                $version .= '.' . $this->micro;
+            }
+        } else {
+            $version = $this->major;
+            if ($this->minor) {
+                $version .= '-' . $this->minor;
+            }
+            if ($this->revision) {
+                $version .= '-' . $this->revision;
+            }
+            if ($this->micro) {
+                $version .= '-' . $this->micro;
+            }
+        }
+
+        if ($this->date) {
+            $version .= '-' . $this->date;
+
+            if ($this->dateVersion) {
+                $version .= '-' . $this->dateVersion;
+            }
+        }
+
+        if (!$this->stability->isStable()) {
+            $version .= '-' . $this->stability;
+        }
+
+        return (string)$version;
     }
 }
